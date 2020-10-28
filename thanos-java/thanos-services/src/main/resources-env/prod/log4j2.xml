@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <properties>
+        <property name="app.name">thanos-grab</property>
+        <property name="log.root.level">INFO</property>
+        <property name="log.console.level">INFO</property>
+        <property name="log.root.path">./logs/${app.name}</property>
+        <property name="log.maxfilesize">100MB</property>
+        <property name="log.pattern">[%d{yyyy-MM-dd HH:mm:ss,SSSXXX}][%level][%traceId][%thread]
+            %logger{20} - %m%n
+        </property>
+        <property name="grab.log.pattern">[%d{yyyy-MM-dd HH:mm:ss,SSSXXX}][%level][%taskId][%thread]
+            %logger{20} - %m%n
+        </property>
+    </properties>
+
+    <Appenders>
+        <Routing name="Routing">
+            <Routes pattern="$${ctx:CrawlerID}">
+                <Route key="$${ctx:CrawlerID}">
+                    <RollingFile name="GrabLogInternal1" fileName="${log.root.path}/system.log"
+                                 filePattern="${log.root.path}/system-%d{yyyy-MM-dd-HH}.log.gz">
+                        <PatternLayout pattern="${log.pattern}"/>
+                        <Policies>
+                            <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                        </Policies>
+                    </RollingFile>
+                </Route>
+                <Route>
+                    <RollingFile name="GrabLogInternal2" fileName="${log.root.path}/crawler-${ctx:CrawlerID}.log"
+                                 filePattern="${log.root.path}/crawler-${ctx:CrawlerID}-%d{yyyy-MM-dd-HH}.log.gz">
+                        <PatternLayout pattern="${grab.log.pattern}"/>
+                        <Policies>
+                            <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                        </Policies>
+                        <DefaultRolloverStrategy max="60">
+                            <Delete basePath="${log.root.path}" maxDepth="2">
+                                <IfFileName glob="*.log.gz"/>
+                                <IfLastModified age="7d"/>
+                            </Delete>
+                        </DefaultRolloverStrategy>
+                    </RollingFile>
+                </Route>
+            </Routes>
+        </Routing>
+
+
+        <!--将error级别的日志单独输出到error.log中-->
+        <RollingFile name="ERROR_LOG" fileName="${log.root.path}/error.log"
+                     filePattern="${log.root.path}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${log.pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="${log.maxfilesize}"/>
+            </Policies>
+        </RollingFile>
+
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${log.pattern}"/>
+        </Console>
+
+    </Appenders>
+
+    <Loggers>
+        <!--<Logger name="org.apache.velocity" level="FATAL"/>-->
+        <Logger name="log4jdbc.log4j2" level="INFO">
+            <MarkerFilter marker="LOG4JDBC_NON_STATEMENT" onMatch="DENY" onMismatch="NEUTRAL"/>
+        </Logger>
+        <Root level="${log.root.level}">
+            <AppenderRef ref="Routing"/>
+            <AppenderRef ref="ERROR_LOG"/>
+            <AppenderRef ref="CONSOLE"/>
+        </Root>
+    </Loggers>
+</Configuration>
