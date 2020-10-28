@@ -2,14 +2,14 @@ use thanos_grab;
 
 create table thanos_crawler
 (
-    id               bigint(11) primary key auto_increment comment '自增主建',
-    crawler_name     varchar(64) not null comment '爬虫名称，也为爬虫业务id',
-    project_name     varchar(64)  null comment '所在项目,可以为空',
-    enable_version   int         not null default 0 comment '启用的版本',
-    owner            varchar (64) null  comment '所属用户',
-    description      varchar (128) null  comment '爬虫描述',
-    enable           bool not null default true comment '是否启用',
-    create_time      datetime     null     default CURRENT_TIMESTAMP comment '创建时间'
+    id             bigint(11) primary key auto_increment comment '自增主建',
+    crawler_name   varchar(64)  not null comment '爬虫名称，也为爬虫业务id',
+    project_name   varchar(64)  null comment '所在项目,可以为空',
+    enable_version int          not null default 0 comment '启用的版本',
+    owner          varchar(64)  null comment '所属用户',
+    description    varchar(128) null comment '爬虫描述',
+    enable         bool         not null default true comment '是否启用',
+    create_time    datetime     null     default CURRENT_TIMESTAMP comment '创建时间'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment '爬虫的基础信息';
 
@@ -28,23 +28,23 @@ create table thanos_crawler_jar
 
 create table thanos_project
 (
-    id               bigint(11) primary key auto_increment comment '自增主建',
-    project_name     varchar(64) not null comment '项目名称',
-    project_desc varchar(255)  not null default '项目描述',
-    create_time      datetime     null     default CURRENT_TIMESTAMP comment '创建时间',
+    id           bigint(11) primary key auto_increment comment '自增主建',
+    project_name varchar(64)  not null comment '项目名称',
+    project_desc varchar(255) not null default '项目描述',
+    create_time  datetime     null     default CURRENT_TIMESTAMP comment '创建时间',
     unique key_project_name (project_name)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment '项目，爬虫数量变多之后进行分类';
 
 create table thanos_crawler_config
 (
-    id               bigint(11) primary key auto_increment comment '自增主建',
-    config_space     varchar(64)  not null comment '爬虫名称，也为爬虫业务id',
-    config_key       varchar(64)      not null              comment '配置项key',
-    config_value     varchar (512) not null  default '' comment '配置值',
-    line_index       int(3) not null default 0 comment '对应行号',
-    create_time      datetime     null     default CURRENT_TIMESTAMP comment '创建时间',
-    unique key_config_space_key (config_space,config_key)
+    id           bigint(11) primary key auto_increment comment '自增主建',
+    config_space varchar(64)  not null comment '爬虫名称，也为爬虫业务id',
+    config_key   varchar(64)  not null comment '配置项key',
+    config_value varchar(512) not null default '' comment '配置值',
+    line_index   int(3)       not null default 0 comment '对应行号',
+    create_time  datetime     null     default CURRENT_TIMESTAMP comment '创建时间',
+    unique key_config_space_key (config_space, config_key)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment '爬虫配置';
 
@@ -56,13 +56,13 @@ CREATE TABLE `thanos_grab_task`
     `task_id`            varchar(64) NOT NULL COMMENT '任务ID，为业务上面唯一描述一个最小粒度的id，如果过长请转化为md5',
     `task_md5`           varchar(64) NOT NULL COMMENT 'md5(crawler_name+task_id)',
     `task_param`         varchar(255)         DEFAULT '' COMMENT '任务参数，一个抓取任务除开任务id部分数据，如绑定设备、账号等',
-    `used_resource`      varchar(255) default '' comment '当次抓取使用的资源',
+    `used_resource`      varchar(255)         default '' comment '当次抓取使用的资源',
     `task_status`        tinyint(4)           DEFAULT '0' COMMENT '任务状态，未执行、执行中、执行失败、执行成功',
     `execute_start_time` datetime             DEFAULT NULL COMMENT '上次执行开始时间',
     `execute_end_time`   datetime             DEFAULT NULL COMMENT '上次执行结束时间',
     `last_success_time`  datetime             DEFAULT NULL COMMENT '上次成功执行时间，如果上次执行失败，那么不会刷新抓取结果字段',
-    `failed_count`       int(5)     NOT NULL DEFAULT '0' COMMENT '连续失败次数',
-    `success_rate`       int(5)              DEFAULT '100' COMMENT '最近连续成功率',
+    `failed_count`       int(5)      NOT NULL DEFAULT '0' COMMENT '连续失败次数',
+    `success_rate`       int(5)               DEFAULT '100' COMMENT '最近连续成功率',
     `executor`           varchar(64)          DEFAULT NULL COMMENT '执行者，分布式环境下区分执行节点',
     `create_time`        datetime             DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `failed_message`     varchar(128)         DEFAULT NULL COMMENT '失败原因',
@@ -77,7 +77,7 @@ CREATE TABLE `thanos_grab_task`
   DEFAULT CHARSET = utf8mb4 COMMENT ='爬虫任务，和seed相同概念';
 
 
-  create table thanos_resource
+create table thanos_resource
 (
     id               bigint(11) primary key auto_increment comment '自增主建',
     resource_group   varchar(64)   not null comment '资源分组，主要区分业务。比如某个网站的账号。account_site',
@@ -109,7 +109,7 @@ create table thanos_kv_cache
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment '爬虫系统提供的一个简单的kv缓存';
 
-  create table thanos_user
+create table thanos_user
 (
     id          bigint(11) primary key auto_increment comment '自增主建',
     account     varchar(50) not null comment '账号',
@@ -136,7 +136,7 @@ create table thanos_server
     id                 bigint(11) primary key auto_increment comment '自增主建',
     executor           varchar(64)  null comment '执行者，分布式环境下区分执行节点',
     enable             bool                  default true comment '是否生效',
-    master             bool default  false  comment '是否是master节点',
+    master             bool                  default false comment '是否是master节点',
     server_comment     varchar(255) not null default '备注',
     last_survival_time datetime     null comment '最后的服务器存活时间'
 ) ENGINE = InnoDB
