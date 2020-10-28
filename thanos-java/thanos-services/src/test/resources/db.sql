@@ -146,8 +146,8 @@ create table thanos_notifier_config
 (
     id          bigint(11) primary key auto_increment comment '自增主建',
     name        varchar(64)   not null comment '通知器名称，业务id。不可重复',
-    type        varchar(32)   not null comment '通知类型，为枚举值。com.czb.crawl.grab.service.notification.ConfigKeys.type',
-    config      varchar(1024) not null default '{}' comment '配置内容，map。其key为：com.czb.crawl.grab.service.notification.ConfigKeys.value',
+    type        varchar(32)   not null comment '通知类型，为枚举值。com.virjar.thanos.service.notification.ConfigKeys.type',
+    config      varchar(1024) not null default '{}' comment '配置内容，map。其key为：com.virjar.thanos.service.notification.ConfigKeys.value',
     scope       varchar(512)  not null default '*' comment '配置作用域，那些爬虫被当前配置作用，默认为全局',
     enable      bool                   default true comment '是否生效',
     update_time datetime      null comment '更新时间，内存根据这个时间觉得是否reload通知器模型',

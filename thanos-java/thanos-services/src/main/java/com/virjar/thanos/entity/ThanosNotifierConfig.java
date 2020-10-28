@@ -26,10 +26,10 @@ public class ThanosNotifierConfig implements Serializable {
     @ApiModelProperty(value = "通知器名称，业务id。不可重复")
     private String name;
 
-    @ApiModelProperty(value = "通知类型，为枚举值。com.czb.crawl.grab.service.notification.ConfigKeys.type")
+    @ApiModelProperty(value = "通知类型，为枚举值。com.virjar.thanos.service.notification.ConfigKeys.type")
     private String type;
 
-    @ApiModelProperty(value = "配置内容，map。其key为：com.czb.crawl.grab.service.notification.ConfigKeys.value")
+    @ApiModelProperty(value = "配置内容，map。其key为：com.virjar.thanos.service.notification.ConfigKeys.value")
     private String config;
 
     @ApiModelProperty(value = "配置作用域，那些爬虫被当前配置作用，默认为全局")
