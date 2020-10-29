@@ -18,7 +18,7 @@ import java.io.InputStream;
 @Service
 public class MinioServiceImpl extends IOssService {
 
-    @Value("${oss.minio.bucket}")
+    @Value("${oss.minio.endpoint}")
     private String endpoint;
 
     @Value("${oss.minio.accessKey}")

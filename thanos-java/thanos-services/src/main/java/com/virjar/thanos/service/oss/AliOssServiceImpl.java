@@ -21,7 +21,7 @@ import java.util.Date;
 @Slf4j
 public class AliOssServiceImpl extends IOssService implements Closeable {
 
-    @Value("${oss.ali.bucket}")
+    @Value("${oss.ali.endpoint}")
     private String endpoint;
 
     @Value("${oss.ali.accessKey}")
