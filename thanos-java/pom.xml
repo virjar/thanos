@@ -20,6 +20,7 @@
 
     <modules>
         <module>thanos-services</module>
+        <module>thanos-api</module>
     </modules>
 
     <description>a grab task scheduler services</description>

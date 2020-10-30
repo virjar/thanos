@@ -47,7 +47,7 @@ public class OssManager implements InitializingBean {
 
         List<IOssService> enabledImplementations = iOssServiceList.stream().filter(IOssService::work).collect(Collectors.toList());
         if (enabledImplementations.isEmpty()) {
-            throw new Exception("can not find any illegal implementation for: " + IOssService.class.getName());
+            throw new Exception("can not find any illegal implementation for: " + IOssService.class.getName() + " 请至少配置一种oss方案");
         }
         if (enabledImplementations.size() > 1) {
             log.warn("multi oss impl founds: {}", StringUtils.join(enabledImplementations.stream().map(it -> it.getClass().getName()).collect(Collectors.toList()), ","));

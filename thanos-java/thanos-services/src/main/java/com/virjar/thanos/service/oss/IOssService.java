@@ -114,7 +114,7 @@ public abstract class IOssService {
     private static final BlockingQueue<AsyncUploadTask> queue = new LinkedBlockingDeque<>();
 
     //如果你觉得是大文件，才有必要走异步，如果只是一个jar文件，没必要走异步
-    private Thread asyncTaskThread = new Thread(() -> {
+    private final Thread asyncTaskThread = new Thread(() -> {
         while (!Thread.currentThread().isInterrupted()) {
             AsyncUploadTask uploadTask;
             try {

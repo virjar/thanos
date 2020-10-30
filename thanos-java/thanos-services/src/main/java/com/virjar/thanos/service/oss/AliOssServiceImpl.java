@@ -5,8 +5,8 @@ import com.aliyun.oss.internal.OSSUtils;
 import com.aliyun.oss.model.AccessControlList;
 import com.aliyun.oss.model.CannedAccessControlList;
 import com.aliyun.oss.model.GetObjectRequest;
+import com.virjar.thanos.service.RootConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.Closeable;
@@ -21,22 +21,11 @@ import java.util.Date;
 @Slf4j
 public class AliOssServiceImpl extends IOssService implements Closeable {
 
-    @Value("${oss.ali.endpoint}")
-    private String endpoint;
-
-    @Value("${oss.ali.accessKey}")
-    private String accessKeyId;
-
-    @Value("${oss.ali.secretKey}")
-    private String accessKeySecret;
-
-    @Value("${oss.ali.bucket}")
-    private String bucket;
 
     @Override
     public void uploadFile(String ossRelativePath, File theUploadFile) {
         if (check()) {
-            ossClient.putObject(bucket, ossRelativePath, theUploadFile);
+            ossClient.putObject(RootConfig.ALIOss.bucket, ossRelativePath, theUploadFile);
         }
     }
 
@@ -45,7 +34,7 @@ public class AliOssServiceImpl extends IOssService implements Closeable {
         if (!check()) {
             return;
         }
-        ossClient.getObject(new GetObjectRequest(bucket, trimURLToPath(pathOrURL)), theDownloadFile);
+        ossClient.getObject(new GetObjectRequest(RootConfig.ALIOss.bucket, trimURLToPath(pathOrURL)), theDownloadFile);
 
     }
 
@@ -56,17 +45,17 @@ public class AliOssServiceImpl extends IOssService implements Closeable {
         }
         ossRelativePath = trimURLToPath(ossRelativePath);
 
-        AccessControlList bucketAcl = ossClient.getBucketAcl(bucket);
+        AccessControlList bucketAcl = ossClient.getBucketAcl(RootConfig.ALIOss.bucket);
         if (CannedAccessControlList.PublicRead == bucketAcl.getCannedACL()) {
             String url = ossClient.getEndpoint().toString();
             if (!url.endsWith("/")) {
                 url += "/";
             }
-            String resourcePath = OSSUtils.determineResourcePath(bucket, ossRelativePath, ossClient.getClientConfiguration().isSLDEnabled());
+            String resourcePath = OSSUtils.determineResourcePath(RootConfig.ALIOss.bucket, ossRelativePath, ossClient.getClientConfiguration().isSLDEnabled());
             url += resourcePath;
             return url;
         }
-        return ossClient.generatePresignedUrl(bucket, ossRelativePath, new Date(new Date().getTime() + 1000 * 60 * 60 * 8)).toString();
+        return ossClient.generatePresignedUrl(RootConfig.ALIOss.bucket, ossRelativePath, new Date(new Date().getTime() + 1000 * 60 * 60 * 8)).toString();
     }
 
     @Override
@@ -81,7 +70,7 @@ public class AliOssServiceImpl extends IOssService implements Closeable {
 
     @Override
     String getBucket() {
-        return bucket;
+        return RootConfig.ALIOss.bucket;
     }
 
     private boolean check() {
@@ -93,11 +82,11 @@ public class AliOssServiceImpl extends IOssService implements Closeable {
 
 
     private void configureOssClient() {
-        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-        if (ossClient.doesBucketExist(bucket)) {
+        OSSClient ossClient = new OSSClient(RootConfig.ALIOss.endpoint, RootConfig.ALIOss.accessKeyId, RootConfig.ALIOss.accessKeySecret);
+        if (ossClient.doesBucketExist(RootConfig.ALIOss.bucket)) {
             this.ossClient = ossClient;
         } else {
-            log.warn("the bucket:{} not exist", bucket);
+            log.warn("the bucket:{} not exist", RootConfig.ALIOss.bucket);
         }
     }
 
