@@ -22,7 +22,7 @@ public class TestDependencyRegistry {
 
     static {
         ClassScanner.AnnotationClassVisitor visitor = new ClassScanner.AnnotationClassVisitor(TestBean.class);
-        ClassScanner.scan(visitor, Lists.newArrayList("com.czb.crawl.grab.api.test.defaultbean"));
+        ClassScanner.scan(visitor, Lists.newArrayList(TestBean.class.getPackage().getName()));
         // 得到所有的默认bean
         Set<Class> classSet = visitor.getClassSet();
 
