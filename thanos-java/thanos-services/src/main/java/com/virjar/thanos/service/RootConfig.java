@@ -119,6 +119,7 @@ public class RootConfig implements InitializingBean {
     }
 
     private Object invokeExpression(String exp, String defaultValue) {
+        boolean useDefaultValue = false;
         TokenQueue tokenQueue = new TokenQueue(exp);
         while (true) {
             tokenQueue.consumeTo("$");
@@ -137,7 +138,12 @@ public class RootConfig implements InitializingBean {
             Object subProperty = findProperty(subExp.trim());
             if (subProperty == null
                     || StringUtils.isBlank(subProperty.toString())) {
-                subProperty = defaultValue;
+                if (useDefaultValue) {
+                    subProperty = "";
+                } else {
+                    subProperty = defaultValue;
+                    useDefaultValue = true;
+                }
             }
             exp = exp.substring(0, start - 1) + subProperty + exp.substring(tokenQueue.nowPosition());
             tokenQueue = new TokenQueue(exp);
