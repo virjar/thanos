@@ -1,12 +1,13 @@
 package com.virjar.thanos.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.time.LocalDateTime;
+import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -14,14 +15,18 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author virar
- * @since 2020-10-28
+ * @since 2020-11-03
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "ThanosCrawlerJar对象", description = "爬虫实例jar包，可以被升级和降级")
+@ApiModel(value="ThanosCrawlerJar对象", description="爬虫实例jar包，可以被升级和降级")
 public class ThanosCrawlerJar implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "自增主建")
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     @ApiModelProperty(value = "爬虫名称，也为爬虫业务id")
     private String crawlerName;
@@ -41,5 +46,19 @@ public class ThanosCrawlerJar implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
 
+
+    public static final String ID = "id";
+
+    public static final String CRAWLER_NAME = "crawler_name";
+
+    public static final String ENABLE = "enable";
+
+    public static final String CRAWLER_VERSION = "crawler_version";
+
+    public static final String OSS_URL = "oss_url";
+
+    public static final String FILE_MD5 = "file_md5";
+
+    public static final String CREATE_TIME = "create_time";
 
 }

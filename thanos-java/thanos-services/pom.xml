@@ -101,12 +101,22 @@
         </dependency>
 
 
-
-
         <dependency>
             <groupId>com.virjar</groupId>
             <artifactId>thanos-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>4.1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>1.8.0.Final</version>
         </dependency>
     </dependencies>
 

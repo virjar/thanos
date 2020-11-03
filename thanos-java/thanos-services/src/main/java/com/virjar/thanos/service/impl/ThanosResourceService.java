@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author virar
- * @since 2020-10-28
+ * @since 2020-11-03
  */
 @Service
 public class ThanosResourceService extends ServiceImpl<ThanosResourceMapper, ThanosResource> implements IService<ThanosResource> {

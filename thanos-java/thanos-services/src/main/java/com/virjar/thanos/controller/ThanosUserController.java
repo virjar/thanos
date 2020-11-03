@@ -2,6 +2,7 @@ package com.virjar.thanos.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author virar
- * @since 2020-10-28
+ * @since 2020-11-03
  */
 @RestController
-@RequestMapping("/api/thanos-user")
+@RequestMapping("/thanos-user")
 public class ThanosUserController {
 
 }

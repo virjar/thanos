@@ -1,5 +1,7 @@
 package com.virjar.thanos.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,7 +16,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author virar
- * @since 2020-10-28
+ * @since 2020-11-03
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,6 +24,10 @@ import java.time.LocalDateTime;
 public class ThanosGrabTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "自增主建")
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     @ApiModelProperty(value = "爬虫id,引用自grab_crawler")
     private String crawlerName;
@@ -68,5 +74,37 @@ public class ThanosGrabTask implements Serializable {
     @ApiModelProperty(value = "种子非法次数")
     private Integer invalidCount;
 
+
+    public static final String ID = "id";
+
+    public static final String CRAWLER_NAME = "crawler_name";
+
+    public static final String TASK_ID = "task_id";
+
+    public static final String TASK_MD5 = "task_md5";
+
+    public static final String TASK_PARAM = "task_param";
+
+    public static final String USED_RESOURCE = "used_resource";
+
+    public static final String TASK_STATUS = "task_status";
+
+    public static final String EXECUTE_START_TIME = "execute_start_time";
+
+    public static final String EXECUTE_END_TIME = "execute_end_time";
+
+    public static final String LAST_SUCCESS_TIME = "last_success_time";
+
+    public static final String FAILED_COUNT = "failed_count";
+
+    public static final String SUCCESS_RATE = "success_rate";
+
+    public static final String EXECUTOR = "executor";
+
+    public static final String CREATE_TIME = "create_time";
+
+    public static final String FAILED_MESSAGE = "failed_message";
+
+    public static final String INVALID_COUNT = "invalid_count";
 
 }

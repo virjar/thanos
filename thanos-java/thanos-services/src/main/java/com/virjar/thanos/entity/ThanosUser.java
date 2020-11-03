@@ -1,12 +1,13 @@
 package com.virjar.thanos.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.time.LocalDateTime;
+import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -14,14 +15,18 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author virar
- * @since 2020-10-28
+ * @since 2020-11-03
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "ThanosUser对象", description = "系统用户，需要有账号才能进入本系统")
+@ApiModel(value="ThanosUser对象", description="系统用户，需要有账号才能进入本系统")
 public class ThanosUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "自增主建")
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     @ApiModelProperty(value = "账号")
     private String account;
@@ -44,5 +49,21 @@ public class ThanosUser implements Serializable {
     @ApiModelProperty(value = "是否被冻结")
     private Boolean blocked;
 
+
+    public static final String ID = "id";
+
+    public static final String ACCOUNT = "account";
+
+    public static final String PWD = "pwd";
+
+    public static final String LOGIN_TOKEN = "login_token";
+
+    public static final String LAST_ACTIVE = "last_active";
+
+    public static final String IS_ADMIN = "is_admin";
+
+    public static final String NICK_NAME = "nick_name";
+
+    public static final String BLOCKED = "blocked";
 
 }

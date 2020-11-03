@@ -45,7 +45,11 @@ public class URLEncodedUtils {
         return urlEncode(content, charset != null ? charset : StandardCharsets.UTF_8);
     }
 
-    private static String urlEncode(
+    public static String urlEncode(final String content) {
+        return urlEncode(content, StandardCharsets.UTF_8);
+    }
+
+    public static String urlEncode(
             final String content,
             final Charset charset) {
         if (content == null) {

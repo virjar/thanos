@@ -1,7 +1,7 @@
 package com.virjar.thanos.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.virjar.thanos.entity.ThanosCrawlerConfig;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.virjar.thanos.entity.ThanosCrawlerConfig;
  * </p>
  *
  * @author virar
- * @since 2020-10-28
+ * @since 2020-11-03
  */
 public interface ThanosCrawlerConfigMapper extends BaseMapper<ThanosCrawlerConfig> {
 

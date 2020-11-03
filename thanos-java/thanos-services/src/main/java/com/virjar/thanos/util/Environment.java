@@ -26,6 +26,8 @@ public class Environment {
      */
     private static final String ossFilesDir = "oss_files";
 
+    private static final String tempFileDir = "temp";
+
     /**
      * 电脑唯一ID，可由thanos系统自动生成
      */
@@ -35,6 +37,16 @@ public class Environment {
      * wrapper的jar包运行目录
      */
     private static final String wrapperJarDir = "wrapper_jar";
+
+    private static File tempDir() {
+        return makeSureDirCreated(new File(workingFileDir, tempFileDir));
+    }
+
+    public static File tempFile() {
+        File file = new File(tempDir(), "temp-" + ThreadLocalRandom.current().nextLong());
+        file.deleteOnExit();
+        return file;
+    }
 
     public static File ossCacheDir() {
         return makeSureDirCreated(new File(workingFileDir, ossFilesDir));
@@ -57,6 +69,10 @@ public class Environment {
         FileUtils.forceMkdir(workingFileDir);
     }
 
+    private static void cleanTempDir() throws IOException {
+        FileUtils.forceDelete(tempDir());
+    }
+
     private static File makeSureDirCreated(File dir) {
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
@@ -69,6 +85,7 @@ public class Environment {
     static {
         try {
             makeSureWorkingDir();
+            cleanTempDir();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

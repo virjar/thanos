@@ -17,8 +17,7 @@ import com.virjar.thanos.api.services.ResourceServices;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -33,6 +32,14 @@ public class CommonUtil {
             value = field.getName();
         }
         return value;
+    }
+
+    public static String translateSimpleExceptionMessage(Throwable exception) {
+        String message = exception.getMessage();
+        if (StringUtils.isBlank(message)) {
+            message = exception.getClass().getName();
+        }
+        return message;
     }
 
     private static Set<String> parseResourceDeclare(GrabProcessor grabProcessor) {
@@ -172,5 +179,12 @@ public class CommonUtil {
 
     public static int trimToInt(Integer value) {
         return trimToInt(value, 0);
+    }
+
+    public static String getStackTrack(Exception e) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(byteArrayOutputStream));
+        e.printStackTrace(printWriter);
+        return byteArrayOutputStream.toString();
     }
 }

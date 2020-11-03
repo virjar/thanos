@@ -3,8 +3,10 @@ package com.virjar.thanos.service.engine;
 import com.virjar.thanos.service.oss.OssManager;
 import com.virjar.thanos.util.Environment;
 import com.virjar.thanos.api.util.Md5Utils;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -12,15 +14,18 @@ import java.io.IOException;
 
 @Service
 @Slf4j
-public class OssJarFileManager {
+public class OssJarFileManager implements InitializingBean {
+    @Getter
+    private static OssJarFileManager instance;
+
     //private static final String SUFFIX_META = ".meta";
     public static final String SUFFIX_JAR = ".jar";
 
-    public void downloadJar(String md5, String crawler, String pathOrURL) throws IOException {
+    public File downloadJar(String md5, String crawler, String pathOrURL) throws IOException {
         File cachePath = Environment.wrapperJar(crawler, md5);
         if (cachePath.exists()) {
             //download already
-            return;
+            return cachePath;
         }
         File target = new File(Environment.wrapperJarDir(crawler), md5 + ".download");
         OssManager.downloadFile(pathOrURL, target);
@@ -39,7 +44,7 @@ public class OssJarFileManager {
                 FileUtils.forceDelete(cachePath);
             }
         }
-
+        return cachePath;
     }
 
 
@@ -64,6 +69,11 @@ public class OssJarFileManager {
                 FileUtils.forceDelete(cachePath);
             }
         }
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        OssJarFileManager.instance = this;
     }
 //
 //
